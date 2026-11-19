@@ -51,11 +51,21 @@ def append_row(worksheet, row_dict):
 st.title("컬러 매칭 데이터 입력 시스템")
 st.caption("2차 버전 컬러 매칭 데이터 저장용 Streamlit 앱")
 
+st.write("1. Google Sheets 연결 시작")
+
 try:
-    worksheet = connect_gsheet()
-    df_existing = load_data(worksheet)
+    with st.spinner("Google Sheets 연결 중..."):
+        worksheet = connect_gsheet()
+
+    st.success("2. Google Sheets 연결 성공")
+
+    with st.spinner("조색 데이터 불러오는 중..."):
+        df_existing = load_data(worksheet)
+
+    st.success(f"3. 데이터 불러오기 성공: {len(df_existing)}건")
+
 except Exception as e:
-    st.error("구글시트 연결에 실패했습니다.")
+    st.error("Google Sheets 연결 또는 데이터 조회 실패")
     st.exception(e)
     st.stop()
 
